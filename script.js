@@ -1,55 +1,59 @@
-/* 
-1. Basic Pomodoro counter features
-a. 25 minute study
-  1.display timer
-  2.pause button
-b. 5 minute break or 10 minute break
-
-//look up - setTimeOut() and setInterval();
-
-
-2. Expand on those
-
-*/
 "use strict";
+//  start pause reset
 
-// const datePlayground = new Date();
-// // console.log(datePlayground);
-// console.log(datePlayground.getSeconds());
+const start = document.getElementById("start");
+const pause = document.getElementById("pause");
+const reset = document.getElementById("reset");
 
-const seconds = document.getElementById("seconds");
-const minutes = document.getElementById("minutes");
+let alarm = new Audio();
 
-seconds.textContent = "00";
-minutes.textContent = "25";
+const currentTimer = document.getElementById("current-time");
 
-function timerUI() {}
+let startPressed = false;
 
-//once the seconds reaches 0 we subtract 1 from minutes
+start.addEventListener("click", (e) => {
+  e.preventDefault();
+  !startPressed ? startTimer() : console.log("timer is going");
+});
 
-const Timer = {
-  interval: 1000,
-  currentSeconds: 0,
-  currentMinutes: 0,
-  start() {
-    this.updateSeconds();
-  },
-  stop() {
-    //sets everything to 0
-    this.currentMinutes = 0;
-    this.currentSeconds = 0;
-  },
-  updateSeconds() {
-    this.currentSeconds--;
-    if (this.currentSeconds == 0) {
-      this.currentSeconds = 59;
-      this.updateMinutes();
-    }
-  },
-  updateMinutes() {
-    this.currentMinutes--;
-    if (this.currentMinutes == 0) {
-      this.stop();
-    }
-  },
+pause.addEventListener("click", (e) => {
+  e.preventDefault();
+  pauseTimer();
+});
+
+reset.addEventListener("click", () => {
+  resetTimer();
+});
+
+let timeLeft = 1500;
+let timerID;
+
+const updateDisplay = function () {
+  //we need to convert time left into [[MM:SS]] format
+  // divide seconds by 60 and get the total minutes
+  let minutes = "00";
+  let seconds = "00";
+
+  minutes = String(Math.floor(timeLeft / 60)).padStart(2, "0");
+  seconds = String(timeLeft % 60).padStart(2, "0");
+
+  currentTimer.textContent = `${minutes}:${seconds}`;
+  document.title = ` 🍅 ${currentTimer.textContent} `;
+};
+
+const startTimer = function () {
+  timerID = setInterval(() => {
+    timeLeft--;
+    updateDisplay();
+  }, 1000);
+};
+
+const pauseTimer = function () {
+  clearInterval(timerID);
+};
+
+const resetTimer = function () {
+  timeLeft = 1500;
+  updateDisplay();
+  pauseTimer();
 };
