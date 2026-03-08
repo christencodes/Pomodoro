@@ -1,4 +1,7 @@
-Here is a clean, checklist-style roadmap for your **Pomodoro Timer**. You can copy this directly into a `README.md` file or a notes app to track your progress.
+![timer](image.png)
+Pomodoro Counter I made (and never used lol)!
+
+---
 
 ---
 
